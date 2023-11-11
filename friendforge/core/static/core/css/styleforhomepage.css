@@ -1,0 +1,67 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #1877F2;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.search-bar {
+    flex: 1;
+    margin: 0 20px;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    outline: none;
+}
+
+.menu-icons {
+    display: flex;
+}
+
+.icon {
+    margin-right: 10px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+
+.main {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+.feed {
+    flex: 2;
+    background-color: #f0f2f5;
+    padding: 20px;
+}
+
+.sidebar {
+    flex: 1;
+    background-color: #fff;
+    padding: 20px;
+}
+
+footer {
+    background-color: #f0f2f5;
+    text-align: center;
+    padding: 10px 0;
+}
