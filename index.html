@@ -1,0 +1,237 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'core/css/styleforhomepage.css' %}">
+    <title>FriendForge</title>
+  </head>
+  <style>
+    .menu-icons a{
+      text-decoration: none;
+      color: whitesmoke;
+    }
+
+    
+    
+    .menu-icons .dropdown .dropdown-item {
+      display: none;
+      position: absolute;
+      background-color: whitesmoke;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgb(0,0,0,0.2);
+      padding: 12px 16px;
+      /* z-index: 1; */
+
+    }
+    .menu-icons .dropdown .dropdown-item a{
+      
+      text-decoration: none;
+      display: block;
+      color: #1877f2;
+      padding: 5px 5px;
+
+    }
+    .menu-icons .dropdown:hover .dropdown-item {
+      
+      
+      display: block;
+    }
+    
+    
+    #whats-on-your-mind {
+      position: relative;
+        width: 500px;
+        margin: 20px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #whats-on-your-mind textarea {
+        width: 100%;
+        border: none;
+        outline: none;
+        resize: none;
+        font-size: 16px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    #whats-on-your-mind .add-photo {
+        color: #1877f2;
+        cursor: pointer;
+    }
+
+    #whats-on-your-mind .add-photo:hover {
+        text-decoration: underline;
+    }
+    #post_button{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 10px;
+    padding: 10px;
+    }
+    body {
+            font-family: Arial, sans-serif;
+        }
+
+    .post-container {
+          max-width: 600px;
+          margin: 20px;
+          border: 1px solid #ddd;
+          background-color: #fff;
+          border-radius: 8px;
+          overflow: hidden;
+        }
+
+        .post-header {
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .user-info {
+            flex-grow: 1;
+        }
+        
+
+        .post-image {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .post-actions {
+            padding: 10px;
+            border-top: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+        }
+        .post-actions a:hover{
+          text-decoration: none;
+        }
+
+        .action-button {
+            color: #555;
+            cursor: pointer;
+            /* text-decoration: none; */
+        }
+  </style>
+  <body>
+    <header>
+      <form action="/search" method="POST">
+        {% csrf_token %}
+        
+        <!-- <div class="search-bar"> -->
+            <input type="text" name="username" placeholder="Search Friends">&nbsp; &nbsp;
+            <button type="submit" style="margin-left: 10px;"><i class="fa fa-search fa-1x"></i>Search</button>
+        <!-- </div> -->
+      </form>
+        <div class="menu-icons">
+            <div class="icon">
+              <a href="" style="text-decoration: none;">Home</a>
+            </div>
+            <div class="icon">
+              <a href="">Messages</a>
+              
+            </div>
+            <div class="icon">
+              <div class="dropdown">
+                <img src="{{user_profile.profileimg.url}}" style="height: 50px; width: 50px; border-radius: 50%;" alt="">
+                
+                <div class="dropdown-item">
+                  <a href="logout">Logout</a>
+                  <a href="settings" >Settings</a>
+                  
+                </div>
+                
+              </div>
+            </div>
+        </div>
+    </header>
+    <main>
+      <form action="upload" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div id="whats-on-your-mind">
+            <h3>Media Upload</h3>
+            <textarea placeholder="Caption Here" name="caption"></textarea>
+            
+                <input class="add-photo" type="file" name="image_upload">
+            
+            
+              <button id= "post_button" class="btn btn-success" type="submit">Post</button>
+            
+        </div>
+      </form>
+        <section class="feed">
+            <!-- Posts go here -->
+            {% for post in posts reversed%}
+            
+              
+            <div class="post-container">
+              <div class="post-header">
+                  
+                  <div class="user-info">
+                      <strong>@<a href="/profile/{{post.user}}" style="color: black;">{{post.user}}</a></strong>
+                      <p>Posted on {{post.created_at}}</p>
+                  </div>
+                  <div class="user-download">
+                       <a href="{{post.image.url}}"style="float: left; text-decoration: none; color: black" download>Download Pic</a>
+                  </div>
+              </div>
+              <p>{{post.caption}}</p>
+              <a href="{{post.image.url}}">
+              <img class="post-image" src="{{post.image.url}}" alt="Post Image"></a>
+              
+              <div class="post-actions">
+                <a href="/like-post?post_id={{post.id}}">
+                  <div class="like-action action-button" >Like</div>
+                </a>
+                  
+                  <div class="comment-action action-button">Comment</div>
+                  <div class="share-action action-button">Share</div>
+              </div>
+              <p><strong>Liked by {{post.no_of_likes}} users</strong></p>
+          </div>
+      
+          
+          {% endfor %}
+            
+        </section>
+        <section class="sidebar">
+            <!-- Sidebar content goes here -->
+
+
+        </section>
+    </main>
+    <footer>
+        <!-- Footer content goes here -->
+
+
+    </footer>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
