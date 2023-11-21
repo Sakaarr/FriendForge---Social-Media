@@ -16,6 +16,8 @@
       text-decoration: none;
       color: whitesmoke;
     }
+
+    
     
     .menu-icons .dropdown .dropdown-item {
       display: none;
@@ -134,10 +136,14 @@
   </style>
   <body>
     <header>
-        <div class="logo">FriendForge</div>
-        <div class="search-bar">
-            <input type="text" placeholder="Search Friends">
-        </div>
+      <form action="/search" method="POST">
+        {% csrf_token %}
+        
+        <!-- <div class="search-bar"> -->
+            <input type="text" name="username" placeholder="Search Friends">&nbsp; &nbsp;
+            <button type="submit" style="margin-left: 10px;"><i class="fa fa-search fa-1x"></i>Search</button>
+        <!-- </div> -->
+      </form>
         <div class="menu-icons">
             <div class="icon">
               <a href="" style="text-decoration: none;">Home</a>
